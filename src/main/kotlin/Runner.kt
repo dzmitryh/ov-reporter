@@ -52,11 +52,10 @@ fun main(args: Array<String>) {
     browser.scrollTo(browser.element("div[class=\"transaction-filter\"] h2"))
     browser.element("input[id=\"selected-card\"]").click()
     browser.element("button[value=\"PDF\"]").click()
-
-    Thread.sleep(3_000)
-    browser.quit()
 }
 
 fun getEnvVarValue(envVarName: String): String {
-    return if (System.getenv(envVarName).isNullOrEmpty()) "default" else System.getenv(envVarName)
+    val value = if (System.getenv(envVarName).isNullOrEmpty()) "default" else System.getenv(envVarName)
+    println("env var name: $envVarName and value: $value")
+    return value
 }
