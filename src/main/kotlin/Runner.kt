@@ -25,18 +25,24 @@ fun main(args: Array<String>) {
     // click on the latest month
     browser.element("div[class=\"ranges\"] ul li:first-child").click()
 
-
     // start operations sequence for some page
     try {
         do {
             val transactions = browser.all("table[class=\"table transaction-overview-table show-declaration\"] tbody tr[class=\"known-transaction\"]")
+            // uncheck all
+            val toogleAllSelection = browser.element("table[class=\"table transaction-overview-table show-declaration\"] thead tr th:last-child input")
+            toogleAllSelection.click()
+            toogleAllSelection.click()
             for (transaction in transactions) {
                 val dateInfo = transaction.element("td:first-child")
+                val routeInfo = transaction.element("td:nth-child(2)")
                 val fareInfo = transaction.element("td:nth-child(3)")
-                if ((dateInfo.text.contains("Saturday")
-                        || dateInfo.text.contains("Sunday")
-                        || fareInfo.text.contains("€ 0.00"))
-                        && fareInfo.text.contains("€")) {
+                val neitherSaturdayNorSunday = !dateInfo.text.contains("Saturday") || !dateInfo.text.contains("Sunday")
+                if ((routeInfo.text.contains("Boeingavenue")
+                        || routeInfo.text.contains("Beechavenue")
+                        || routeInfo.text.contains("Ld Modderman"))
+                        && fareInfo.text.contains("€")
+                        && neitherSaturdayNorSunday) {
                     transaction.element("td:last-child input").click()
                 }
             }
